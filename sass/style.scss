@@ -1,0 +1,254 @@
+$type: debug;
+$type: nodebug; // comment this line to enable debug mode.
+
+@use 'crt';
+
+:root
+{
+    --c1: #f2fbeb;
+    --c2: #171219;
+}
+
+@mixin border
+{
+    border: 16px solid transparent;
+    border-image: url(../media/border.png) 25% round;
+}
+
+@mixin border3
+{
+    border: 16px solid transparent;
+    border-image: url(../media/border3.png) 25% round;
+}
+
+*
+{
+    font-family: mainFont;
+    // Font does not really support bold letters.
+    font-weight: normal;
+    // not exactly black and white as pure monochrome is quite hard on the eyes.
+    color: var(--c1);
+    background-color: var(--c2);
+    // Hopefully preventing the blurring of low-res fonts. (It didn't but keeping this for good measure)
+    -webkit-font-smoothing: none;
+    text-rendering: optimizeLegibility !important;
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
+
+    font-size: 16px;
+    line-height: 16px;
+    font-smooth: never;
+    text-overflow: ellipsis;
+    padding: 0px;
+    margin: 0px;
+}
+
+*,
+html
+{
+    scroll-behavior: smooth !important;
+}
+
+.flash
+{
+    animation: flash-bg 1s;
+}
+
+@keyframes flash-bg
+{
+    0%
+    {
+        background-color: var(--c1);
+    }
+
+    100%
+    {
+        background-color: inherit;
+    }
+}
+
+html
+{
+    scroll-behavior: smooth;
+}
+
+#page
+{
+    @if $type ==debug
+    {
+        border: 1px solid green;
+    }
+
+    width: 70%;
+
+    padding: 10px 0;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+    overflow: hidden;
+}
+
+.pageSection
+{
+    @if $type ==debug
+    {
+        border: 1px solid yellow;
+    }
+
+    float: left;
+    flex: 1 1 30%;
+
+    padding: 10px;
+    margin-right: 10px;
+
+    &:not(#container)
+    {
+        @include border3;
+    }
+}
+
+#jtnadrooi
+{
+    @include border3;
+    width: 100%;
+    margin-bottom: 10px;
+    line-height: 100px;
+    font-size: 10vw;
+    text-align: center;
+    font-family: nadrooiFont;
+}
+
+#container
+{
+    @if $type ==debug
+    {
+        border: 1px solid blue;
+    }
+
+    min-width: 200px;
+
+    padding: 0px;
+
+    display: grid;
+    margin: 0 auto;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    grid-template-rows: repeat(auto-fit, minmax(180px, 1fr));
+    max-width: 100%;
+    column-gap: 10px;
+    row-gap: 10px;
+}
+
+.section
+{
+    min-width: initial;
+    min-height: initial;
+    // aspect-ratio: 1;
+
+    @include border;
+
+    padding: 15px;
+    overflow: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+
+    &.large
+    {
+        grid-column: span 2;
+        grid-row: span 2;
+    }
+
+    &.high
+    {
+        grid-column: span 1;
+        grid-row: span 2;
+        aspect-ratio: unset;
+    }
+
+    &.wide
+    {
+        grid-column: span 2;
+        grid-row: span 1;
+        aspect-ratio: unset;
+    }
+
+    *:not(img)
+    {
+        background-color: transparent;
+    }
+}
+
+button
+{
+    @include border3;
+    text-align: center;
+    line-height: 1px;
+    margin-bottom: 10px;
+
+}
+
+h1
+{
+    font-size: 32px;
+    line-height: 32px;
+    text-align: center;
+    font-family: headerFont;
+    margin-top: -8px;
+}
+
+img
+{
+    float: left;
+    margin: 0px 10px 0px 0px;
+
+    &.smallImg
+    {
+        width: min(30%, 40px);
+        height: auto;
+    }
+
+    &.medImg
+    {
+        width: min(60%, 80px);
+        height: auto;
+    }
+
+    &.screenshot
+    {
+        width: 90%;
+        height: auto;
+        @include border3()
+    }
+}
+
+ul
+{
+    margin-left: max(20px, 10%);
+    list-style-type: square;
+
+}
+
+#sideView
+{
+    flex: 0.1 0.1 10%;
+}
+
+@media screen and (max-width: 900px)
+{
+    #sideView
+    {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1400px)
+{
+    #page
+    {
+        width: 80%;
+    }
+}
